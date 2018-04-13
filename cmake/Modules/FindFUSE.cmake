@@ -5,24 +5,29 @@
 #  FUSE_FOUND       - True if FUSE lib is found.
 
 # check if already in cache, be silent
+
+set(FUSE_ROOT $ENV{FUSE_ROOT})
+
 IF (FUSE_INCLUDE_DIR)
     SET (FUSE_FIND_QUIETLY TRUE)
 ENDIF (FUSE_INCLUDE_DIR)
 
+message(${FUSE_ROOT})
+
 # find includes
-FIND_PATH (FUSE_INCLUDE_DIR fuse.h
-        /usr/include
-        /usr/local/include
-	/usr/local/fuse/include
-        )
+FIND_PATH (FUSE_INCLUDE_DIR
+    NAMES fuse.h
+    HINTS
+    ${FUSE_ROOT}/include
+)
 
 # find lib
 SET(FUSE_NAMES fuse)
 
 FIND_LIBRARY(FUSE_LIBRARIES
-        NAMES ${FUSE_NAMES}
-        PATHS /lib64 /lib /usr/lib64 /usr/lib /usr/local/lib64 /usr/local/lib /usr/local/fuse/lib
-        )
+    NAMES ${FUSE_NAMES}
+    PATHS ${FUSE_ROOT}/lib
+)
 
 include ("FindPackageHandleStandardArgs")
 find_package_handle_standard_args ("FUSE" DEFAULT_MSG

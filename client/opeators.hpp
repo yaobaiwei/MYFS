@@ -23,6 +23,8 @@ extern "C" {
 #include <sys/types.h>
 #include <utime.h>
 
+extern int _myfs_theta;
+
 void myfs_fullpath(char fpath[PATH_MAX], const char *path);
 int myfs_getattr(const char *path, struct stat *statbuf);
 int myfs_readlink(const char *path, char *link, size_t size);

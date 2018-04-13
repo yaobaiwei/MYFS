@@ -9,6 +9,7 @@ add_library(util-objs OBJECT
     global.cpp
     mailbox.cpp
    	log.c
+    raid5.cpp
     )
 
 add_library(myfs-util STATIC $<TARGET_OBJECTS:util-objs> $<TARGET_OBJECTS:iniparser-objs>)

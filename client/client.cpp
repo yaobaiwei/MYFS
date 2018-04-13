@@ -40,6 +40,7 @@ int Client::mount(){
 
 	// turn over control to fuse
 	fprintf(stderr, "about to call fuse_main\n");
+  _myfs_theta = _theta;
 	Opeators opers;
 	fuse_stat = opers.mount(_argc, _argv, myfs_data);
 	fprintf(stderr, "fuse_main returned %d\n", fuse_stat);
