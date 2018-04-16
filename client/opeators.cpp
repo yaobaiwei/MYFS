@@ -332,7 +332,7 @@ int myfs_read(const char *path, char *buf, size_t size, off_t offset, struct fus
         if (offset == file_size) {
             return 0;
         }
-        size = std::min((size_t)file_size, offset + size) - offset;
+        size = std::min((off_t)file_size, offset + size) - offset;
 
         for (size_t i = size; i;) {
             i -= large_file_read(buf + (size - i), i, offset + (size - i));

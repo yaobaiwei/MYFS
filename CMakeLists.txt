@@ -5,8 +5,8 @@ include_directories(${PROJECT_SOURCE_DIR} ${FUSE_INCLUDE_DIR})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/release/)
 
-set(CMAKE_C_COMPILER   "/home/yjzhao/Downloads/mpich-3.2.1/install/bin/mpicc")
-set(CMAKE_CXX_COMPILER "/home/yjzhao/Downloads/mpich-3.2.1/install/bin/mpic++")
+set(CMAKE_C_COMPILER   "/usr/local/mpich/bin/mpicc")
+set(CMAKE_CXX_COMPILER "/usr/local/mpich/bin/mpic++")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wno-deprecated")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -fPIC")
