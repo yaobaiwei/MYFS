@@ -36,3 +36,7 @@ This is a movie...2333
     fusermount -u [mount_dir]
     # then remove the `DATANODE_ROOT` on the datanodes.
     ```
+7. Notes:
+   a. For `Unmount`, make sure you remove the `DATANODE_ROOT` on the datanodes!! Otherwise, you cannot mount again.
+   b. Before `Mount`, make sure you create the `[mount_dir]` on the machine where we mount fuse!!
+   c. For multi mahcines, the first machine is where we mount fuse. Usually we should list local machine as the first machine.
