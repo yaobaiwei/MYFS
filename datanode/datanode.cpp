@@ -101,6 +101,7 @@ void Datanode::loop()
 
                 std::string dir = _root + meta.path;
 
+                files.erase(meta.path);
                 auto iter = large_file_index.find(meta.path);
                 if(iter == large_file_index.end()){
                     //new file
