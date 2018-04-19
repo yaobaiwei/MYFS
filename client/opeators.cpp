@@ -41,6 +41,9 @@ char open_fname[PATH_MAX];
 int _myfs_theta = 2048;
 // std::mutex mpi_lock;
 
+std::string tmp_buf;
+off_t tmp_offset;
+
 void set_fname(const char * path){
     memcpy(open_fname, path, strlen(path));
     open_fname[strlen(path)] = '\0';
@@ -332,7 +335,7 @@ int myfs_read(const char *path, char *buf, size_t size, off_t offset, struct fus
         if (offset == file_size) {
             return 0;
         }
-        size = std::min((off_t)file_size, offset + size) - offset;
+        size = std::min((size_t)file_size, (size_t)offset + size) - offset;
 
         for (size_t i = size; i;) {
             i -= large_file_read(buf + (size - i), i, offset + (size - i));
@@ -362,17 +365,16 @@ int myfs_read(const char *path, char *buf, size_t size, off_t offset, struct fus
 }
 
 //TODO
-int myfs_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi)
+int inner_myfs_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi)
 {
     int retstat = 0;
 
-    log_msg("\nmyfs_write(path=\"%s\", buf=0x%08x, size=%d, offset=%lld, fi=0x%08x)\n", get_fname(), buf, size, offset, fi );
-    log_fi(fi);
-
     if (offset + size > _myfs_theta) {
+        log_msg("\ninner_myfs_write for large file(path=\"%s\", buf=0x%08x, size=%d, offset=%lld, fi=0x%08x)\n", get_fname(), buf, size, offset, fi );
         if (offset != 0) {
             size_t sz = get_file_size(get_fname());
             // append only
+            // printf("%d %d\n", (int)sz, (int)offset);
             assert(sz == offset && (true || "only support append"));
         }
 
@@ -422,6 +424,23 @@ int myfs_write(const char *path, const char *buf, size_t size, off_t offset, str
     }
 }
 
+int myfs_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi)
+{
+    log_msg("\nmyfs_write(path=\"%s\", buf=0x%08x, size=%d, offset=%lld, fi=0x%08x)\n", get_fname(), buf, size, offset, fi );
+    log_fi(fi);
+
+    if (tmp_buf.empty()) {
+        tmp_offset = offset;
+    }
+    tmp_buf.append(buf, size);
+    if (tmp_buf.size() > _myfs_theta) {
+        assert(tmp_offset == offset + size - tmp_buf.size());
+        inner_myfs_write(path, tmp_buf.c_str(), tmp_buf.size(), tmp_offset, fi);
+        tmp_buf.clear();
+    }
+
+    return size;
+}
 
 int myfs_statfs(const char *path, struct statvfs *statv)
 {
@@ -443,6 +462,11 @@ int myfs_release(const char *path, struct fuse_file_info *fi)
 {
     log_msg("\nmyfs_release(path=\"%s\", fi=0x%08x)\n", path, fi);
     log_fi(fi);
+
+    if (!tmp_buf.empty()) {
+        inner_myfs_write(path, tmp_buf.c_str(), tmp_buf.size(), tmp_offset, fi);
+        tmp_buf.clear();
+    }
 
     return log_syscall("close", close(fi->fh), 0);
 }

@@ -1,5 +1,10 @@
-# Lala_Land
-This is a movie...2333
+# This is a README
+
+This is a joint work with CHEN Hongzhi.
+
+In case of any problem, welcome to the my [repo](https://github.com/zzxx-husky/Lala_Land) on github and raise any issue.
+
+There are sample IOZone reports generated using my own computer. The reports are also inside this zip file. One is a text file with named **report.txt** and the other one is an excel compatible binary file named **output.wks**.
 
 1. Make sure you have mpi installed in your machines. <br>
    a. Change the C and C++ compiler (CMAKE_C_COMPILER and CMAKE_CXX_COMPILER) in the `./CMakeLists.txt`. <br>
@@ -36,3 +41,7 @@ This is a movie...2333
     fusermount -u [mount_dir]
     # then remove the `DATANODE_ROOT` on the datanodes.
     ```
+7. Notes:<br>
+   a. For `Unmount`, make sure you remove the `DATANODE_ROOT` on the datanodes!! Otherwise, you cannot mount again.<br>
+   b. Before `Mount`, make sure you create the `[mount_dir]` on the machine where we mount fuse!!<br>
+   c. For multi mahcines, the first machine is where we mount fuse. Usually we should list local machine as the first machine.<br>
