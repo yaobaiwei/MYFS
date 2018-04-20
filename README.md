@@ -1,8 +1,8 @@
 # This is a README
 
-This is a joint work with CHEN Hongzhi.
+This is a joint work with Zhao Yunjian.
 
-In case of any problem, welcome to the my [repo](https://github.com/zzxx-husky/Lala_Land) on github and raise any issue.
+In case of any problem, welcome to the my [repo](https://github.com/yaobaiwei/Lala_Land) on github and raise any issue.
 
 There are sample IOZone reports generated using my own computer. The reports are also inside this zip file. One is a text file with named **report.txt** and the other one is an excel compatible binary file named **output.wks**.
 
